@@ -1,6 +1,8 @@
 const xlsxFile = require("read-excel-file/node");
 const moment = require("moment");
 const fetch = require("node-fetch");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const CURRENT_WEEK = 25;
 const TIMER = 200;
@@ -107,8 +109,7 @@ xlsxFile("./files/ChristmasTradingHours.xlsx").then(async (rows) => {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization:
-              "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImU2ZmFkZGI1NTc3OWJkOTk2M2I4MDgxM2UxZTFmODI3YWI0OGViYmZmNTdiMjRlMjRhZWM0OWEwN2QzZDdhNTY4ZjZmYmRiMWJjZDJlNDA3In0.eyJhdWQiOiIyIiwianRpIjoiZTZmYWRkYjU1Nzc5YmQ5OTYzYjgwODEzZTFlMWY4MjdhYjQ4ZWJiZmY1N2IyNGUyNGFlYzQ5YTA3ZDNkN2E1NjhmNmZiZGIxYmNkMmU0MDciLCJpYXQiOjE2MDc5OTEyNzksIm5iZiI6MTYwNzk5MTI3OSwiZXhwIjoxNjM5NTI3Mjc5LCJzdWIiOiIxMyIsInNjb3BlcyI6WyJjcmVhdGUtbG9jYXRpb25zIiwicmVhZC1sb2NhdGlvbnMiLCJ1cGRhdGUtbG9jYXRpb25zIiwiZGVsZXRlLWxvY2F0aW9ucyJdfQ.O4xINmt0bFmGsRmf2EuGwBxTA9OGQZGFtVbfBMvvKvIfwU3qzUkzxCnmYuiF9GX02OAsJM30JttiPZJWAkSgWvNj-0Bet6_WhK2X2_B6k_ouI46Fzk7tTxWKm1OIf9GYsqZggyD2MWAJCgTja6rbV24DegV3-eh1tWr5DdiCS1m83r1xNgpMbpbkooh7t8Fom46bBDozV2zYvVIVidu2dG5PAQ4dbsIY-Mv2iclWP45jE0-VvC7o5LtpVdMH_HBujOuK65AYqVDeHW861H2imjlcb71NqTP14gUIDG2hjQW9fTdLrZNir_EhpLI1NX9aiHDmVMA5t_tGLqW5uTwP-nvtQ2hLB3hFXLkhkYHkYjSg4wJ1aFOPCzbID1f1FXmOvdz5gkrhiCPHpgw2ncM6Kt7d4feraW9eVnpWRhwwOzdzQg2bTNzas3QpwB6VW5LQem0vV4zIpdmqYb2InZBpm7dMDYE0kKWqniNBsDdcgrftNLFgnK-dOI0P9u1tyiksRnXTvpVZveuCicT4r_0OR_T5UL3IhD8wRclvscuWQmxbl1_J3XbcLL8F7rJU80rLPXkH_b-AjBtOv9UHqUc7UEga-oaZ4SAkuYRKegQhl-30Q3PdeNwnD1jHkxmVFs-id_ciqNtcYhV3fjaOswB9LXTyARPI7VPqJaXnl6k7FqY",
+            Authorization: `Bearer ${process.env.BEARER_TOKEN}`,
           },
         }
       ).then((res) => {
