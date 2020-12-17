@@ -4,8 +4,8 @@ const fetch = require("node-fetch");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const CURRENT_WEEK = 25;
-const TIMER = 200;
+const CURRENT_WEEK = "25";
+const TIMER = 100;
 
 async function sleep(millis) {
   return new Promise((resolve) => setTimeout(resolve, millis));
@@ -13,7 +13,7 @@ async function sleep(millis) {
 
 function formatTime(d) {
   const number = Math.round(d * 24 * 10) / 10;
-  return moment(number.toString(), "LT").format("HH:mm");
+  return moment().startOf("day").add(number, "hours").format("HH:mm");
 }
 
 if (process.argv[3] === undefined) {
@@ -71,10 +71,12 @@ function updateWebsite(filename) {
     let count = 0;
     for (let i = 2; i < rows.length; i++) {
       await sleep(TIMER);
-      if (rows[i][columns.week] === CURRENT_WEEK) {
+      if (
+        rows[i][columns.week] === CURRENT_WEEK ||
+        rows[i][columns.week] === +CURRENT_WEEK
+      ) {
         const omneo_id = rows[i][columns.omneo_id];
         const location = rows[i][columns.store];
-        count += 1;
         const body = {
           normal_hours: [
             {
@@ -109,7 +111,7 @@ function updateWebsite(filename) {
             },
             {
               day_of_week: "SUN",
-              open_at: formatTime(rows[i][columns.weekday.monday.open]),
+              open_at: formatTime(rows[i][columns.weekday.sunday.open]),
               close_at: formatTime(rows[i][columns.weekday.sunday.close]),
             },
           ],
@@ -129,11 +131,13 @@ function updateWebsite(filename) {
         ).then((res) => {
           if (res.ok) {
             console.log(location, res.status, `(${omneo_id})`);
+            count += 1;
           } else {
             console.log(location, body);
           }
         });
       }
     }
+    console.log("Updated ", count, " stores");
   });
 }
